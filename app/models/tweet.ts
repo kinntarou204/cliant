@@ -1,4 +1,4 @@
-import { User, initialUser } from '@/app/models/user';
+import { User, initialUser } from '@/app/models/User';
 
 export interface Tweet {
     id: number;

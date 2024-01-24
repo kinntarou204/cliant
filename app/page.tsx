@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { User, testUser } from "./models/user";
-import { Tweet } from "./models/tweet";
-import { getTweets } from "./services/TweetServices";
+import { User, testUser } from "./models/User";
+import { Tweet } from "./models/Tweet";
+import { getTweets } from "./services/TweetService";
 
 export default function Home() {
   //テストユーザの取得
@@ -21,11 +21,17 @@ export default function Home() {
       }
     })();
   }, [user])
-  
+
   return (
     <div>
-      <textarea className="resize-none w-full h-24 border rounded-md p-2"></textarea>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Send</button>
+      {
+        user?.id > 0 && (
+          <>
+            <textarea className="resize-none w-full h-24 border rounded-md p-2"></textarea>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Send</button>
+          </>
+        )
+      }
     </div>
   )
 }
