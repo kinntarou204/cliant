@@ -1,35 +1,27 @@
 "use client"
 
+import ClickButton from "@/app/components/ClickButton";
 import Input from "@/app/components/Input";
+import { SignIn } from "@/app/services/UserService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 
 const LoginPage = () => {
-    const [email, setEmail] = useState<string>();
-    const [password, setPassword] = useState<string>();
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const router = useRouter();
 
     const auth = async () => {
-        const url = "http://localhost:8000/api/auth";
-        console.log(email, password)
-
-        const response = await fetch(url,
-            {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result.access_token);
-            if (result.access_token) {
-                // redirect top page
-                router.push('/');
-            }
+        const result = await SignIn({ email, password });
+        if (result.access_token) {
+            // redirect top page
+            router.push('/');
         }
     }
+
+    const isDisable = () => !(email && password);
 
     return (
         <div className="mx-auto w-1/3">
@@ -44,13 +36,12 @@ const LoginPage = () => {
             </div>
 
             <div>
-                <button className="
-                    w-full bg-black
-                    text-white hover:bg-gray-800
-                    py-2 px-4 my-3
-                    rounded-lg" onClick={auth}>
-                    Sign in
-                </button>
+                <ClickButton
+                    label="Sign in"
+                    onClick={auth}
+                    disabled={isDisable()}
+                />
+
 
                 <Link
                     href="/auth/regist"
